@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  emailVerified DateTime?
+  password      String
+  cnpj          String
+  avatar        String?
+  cep           String?
+  address       String?
+  houseNumber   String?
+  district      String?
+  complement    String?
+  city          String?
+  country       String?
+  state         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime  @updatedAt
+}
+
+model Technician {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String
+  cpfCnpj     String
+  phone       String
+  creaCFT     String?
+  status      String?
+  cep         String?
+  address     String?
+  houseNumber String?
+  district    String?
+  complement  String?
+  city        String?
+  country     String?
+  state       String?
+  avatar      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime @updatedAt
+
+  Pmoc   Pmoc?   @relation(fields: [pmocId], references: [id])
+  pmocId String?
+}
+
+model Client {
+  id             String   @id @default(uuid())
+  name           String
+  email          String   @unique
+  cpfCnpj        String
+  phone          String
+  mainTechnician String?
+  cep            String?
+  address        String?
+  houseNumber    String?
+  district       String?
+  complement     String?
+  city           String?
+  country        String?
+  state          String?
+  avatar         String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime @updatedAt
+
+  Pmoc Pmoc[]
+}
+
+model Pmoc {
+  id             String   @id @default(uuid())
+  name           String
+  frequency      String
+  period         String
+  art            String
+  mainTechnician String?
+  creaCFT        String
+  clientId       String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime @updatedAt
+
+  client      Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  technicians Technician[]
+}
+
+model MaintenanceTask {
+  id          String   @id @default(uuid())
+  description String
+  type        String
+  frequency   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime @updatedAt
+
+  PmocModel   PmocModel? @relation(fields: [pmocModelId], references: [id], onDelete: Cascade)
+  pmocModelId String?
+}
+
+model PmocModel {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime @updatedAt
+
+  tasks MaintenanceTask[]
+}

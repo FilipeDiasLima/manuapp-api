@@ -1,0 +1,33 @@
+{
+  "name": "manuapp-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/cors": "^8.3.0",
+    "@fastify/jwt": "^7.2.1",
+    "@prisma/client": "^5.2.0",
+    "axios": "^1.5.0",
+    "bcrypt": "^5.1.1",
+    "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.23.0",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.1.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/bcryptjs": "^2.4.3",
+    "@types/node": "^20.6.0",
+    "eslint": "^8.49.0",
+    "prisma": "^5.2.0",
+    "tsx": "^3.12.9",
+    "typescript": "^5.2.2"
+  }
+}
