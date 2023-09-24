@@ -2,7 +2,7 @@ import { UsersRepository } from "../repositories/UserRespository";
 import { UserRegisterInterface } from "../interface/user";
 import bcrypt from "bcrypt";
 
-export class RegisterService {
+export class UserRegisterService {
   constructor(private usersRepository: UsersRepository) {}
 
   async create(data: UserRegisterInterface) {

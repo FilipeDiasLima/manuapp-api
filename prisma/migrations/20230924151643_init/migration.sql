@@ -6,6 +6,7 @@ CREATE TABLE "User" (
     "emailVerified" DATETIME,
     "password" TEXT NOT NULL,
     "cnpj" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
     "avatar" TEXT,
     "cep" TEXT,
     "address" TEXT,

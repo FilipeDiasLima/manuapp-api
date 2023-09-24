@@ -1,4 +1,5 @@
 import { prisma } from "../../../database/prisma";
+import { ClientRegisterInterface } from "../../interface/client";
 import { UserInterface, UserRegisterInterface } from "../../interface/user";
 import { UsersRepository } from "../UserRespository";
 
@@ -14,6 +15,7 @@ export class PrismaUsersRespository implements UsersRepository {
         email: true,
         password: true,
         cnpj: true,
+        phone: true,
       },
     });
 
@@ -27,6 +29,7 @@ export class PrismaUsersRespository implements UsersRepository {
         email: data.email,
         password: data.password,
         cnpj: data.cnpj,
+        phone: data.phone,
       },
       select: {
         id: true,
@@ -34,6 +37,7 @@ export class PrismaUsersRespository implements UsersRepository {
         email: true,
         cnpj: true,
         password: true,
+        phone: true,
       },
     });
 

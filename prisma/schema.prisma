@@ -17,6 +17,7 @@ model User {
   emailVerified DateTime?
   password      String
   cnpj          String
+  phone         String
   avatar        String?
   cep           String?
   address       String?
