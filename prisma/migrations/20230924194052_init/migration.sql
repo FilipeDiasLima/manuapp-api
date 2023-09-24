@@ -44,7 +44,9 @@ CREATE TABLE "Technician" (
     "updatedAt" DATETIME NOT NULL,
     "deletedAt" DATETIME NOT NULL,
     "pmocId" TEXT,
-    CONSTRAINT "Technician_pmocId_fkey" FOREIGN KEY ("pmocId") REFERENCES "Pmoc" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "userId" TEXT,
+    CONSTRAINT "Technician_pmocId_fkey" FOREIGN KEY ("pmocId") REFERENCES "Pmoc" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "Technician_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -66,7 +68,9 @@ CREATE TABLE "Client" (
     "avatar" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "deletedAt" DATETIME NOT NULL
+    "deletedAt" DATETIME NOT NULL,
+    "userId" TEXT,
+    CONSTRAINT "Client_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -78,11 +82,13 @@ CREATE TABLE "Pmoc" (
     "art" TEXT NOT NULL,
     "mainTechnician" TEXT,
     "creaCFT" TEXT NOT NULL,
-    "clientId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     "deletedAt" DATETIME NOT NULL,
-    CONSTRAINT "Pmoc_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "userId" TEXT,
+    "clientId" TEXT NOT NULL,
+    CONSTRAINT "Pmoc_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "Pmoc_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -95,7 +101,9 @@ CREATE TABLE "MaintenanceTask" (
     "updatedAt" DATETIME NOT NULL,
     "deletedAt" DATETIME NOT NULL,
     "pmocModelId" TEXT,
-    CONSTRAINT "MaintenanceTask_pmocModelId_fkey" FOREIGN KEY ("pmocModelId") REFERENCES "PmocModel" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "userId" TEXT,
+    CONSTRAINT "MaintenanceTask_pmocModelId_fkey" FOREIGN KEY ("pmocModelId") REFERENCES "PmocModel" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "MaintenanceTask_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -104,7 +112,30 @@ CREATE TABLE "PmocModel" (
     "name" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "deletedAt" DATETIME NOT NULL
+    "deletedAt" DATETIME NOT NULL,
+    "userId" TEXT,
+    "equipmentId" TEXT,
+    CONSTRAINT "PmocModel_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "PmocModel_equipmentId_fkey" FOREIGN KEY ("equipmentId") REFERENCES "Equipment" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Equipment" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "model" TEXT NOT NULL,
+    "manufacturer" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "power" INTEGER NOT NULL,
+    "taskType" TEXT NOT NULL,
+    "place" TEXT NOT NULL,
+    "fixedOccupant" INTEGER NOT NULL,
+    "mobileOccupant" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "deletedAt" DATETIME NOT NULL,
+    "clientId" TEXT,
+    CONSTRAINT "Equipment_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateIndex

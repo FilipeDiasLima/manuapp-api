@@ -28,4 +28,18 @@ export class PrismaClientsRespository implements ClientsRepository {
 
     return;
   }
+
+  async getAll(userId: string): Promise<ClientInterface[] | []> {
+    const clients = await prisma.client.findMany({
+      where: {
+        userId,
+        deletedAt: undefined,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return clients;
+  }
 }

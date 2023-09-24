@@ -30,6 +30,12 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime  @updatedAt
+
+  clients          Client[]
+  technicians      Technician[]
+  pmocs            Pmoc[]
+  pmocModels       PmocModel[]
+  maintenanceTasks MaintenanceTask[]
 }
 
 model Technician {
@@ -56,6 +62,8 @@ model Technician {
 
   Pmoc   Pmoc?   @relation(fields: [pmocId], references: [id])
   pmocId String?
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
 
 model Client {
@@ -78,7 +86,10 @@ model Client {
   updatedAt      DateTime @updatedAt
   deletedAt      DateTime @updatedAt
 
-  Pmoc Pmoc[]
+  pmocs     Pmoc[]
+  User      User?       @relation(fields: [userId], references: [id])
+  userId    String?
+  Equipment Equipment[]
 }
 
 model Pmoc {
@@ -89,13 +100,15 @@ model Pmoc {
   art            String
   mainTechnician String?
   creaCFT        String
-  clientId       String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   deletedAt      DateTime @updatedAt
 
-  client      Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
   technicians Technician[]
+  User        User?        @relation(fields: [userId], references: [id])
+  userId      String?
+  Client      Client       @relation(fields: [clientId], references: [id])
+  clientId    String
 }
 
 model MaintenanceTask {
@@ -109,6 +122,8 @@ model MaintenanceTask {
 
   PmocModel   PmocModel? @relation(fields: [pmocModelId], references: [id], onDelete: Cascade)
   pmocModelId String?
+  User        User?      @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model PmocModel {
@@ -118,5 +133,31 @@ model PmocModel {
   updatedAt DateTime @updatedAt
   deletedAt DateTime @updatedAt
 
-  tasks MaintenanceTask[]
+  tasks       MaintenanceTask[]
+  User        User?             @relation(fields: [userId], references: [id])
+  userId      String?
+  Equipment   Equipment?        @relation(fields: [equipmentId], references: [id])
+  equipmentId String?
+}
+
+model Equipment {
+  id             String @id @default(uuid())
+  name           String
+  model          String
+  manufacturer   String
+  type           String
+  power          Int
+  taskType       String
+  place          String
+  fixedOccupant  Int
+  mobileOccupant Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime @updatedAt
+
+  Client   Client? @relation(fields: [clientId], references: [id])
+  clientId String?
+
+  pmocModels PmocModel[]
 }
